@@ -1,2 +1,70 @@
-config.json 
-/node_modules 
+# Configuration & Secrets
+config.json
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+/node_modules
+npm-debug.log
+npm-error.log
+yarn-error.log
+package-lock.json
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+.vscode/settings.json
+
+# OS Files
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+pole_position.sql
+
+# Session & Cache
+/web/public/uploads/
+.cache/
+/session-state/
+
+# Build & Dist
+/dist
+/build
+*.tgz
+
+# Testing
+/coverage
+.nyc_output
+
+# Environment
+.env.development
+.env.production
+
+# Local development
+local.json
+debug.log
+
+# Temporary files
+*.tmp
+*.temp
+~*
+
+# Copilot session state
+.copilot/
+.copilot-cli/
+
+WEBSITE_PREMIUM.html
+WEBSITE_README.md 

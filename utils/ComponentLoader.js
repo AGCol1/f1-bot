@@ -62,6 +62,9 @@ function addComponent(map, id, data, filePath) {
 	if (typeof id === 'string') {
 		if (map.has(id)) duplicateIDs.push(id);
 		map.set(id, Object.assign(data, { customID: id, __filePath: filePath }));
+	} else if (id instanceof RegExp) {
+		// Store regex patterns directly
+		map.set(id, Object.assign(data, { customID: id, __filePath: filePath }));
 	}
 
 	if (duplicateIDs.length > 0) throw `Duplicate IDs found: ${duplicateIDs.join(', ')}`;

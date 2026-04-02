@@ -35,6 +35,10 @@ function logToTelegram(content) {
 // Startup
 (async () => {
     try {
+        // Initialize F1 database automatically if needed
+        const { autoInitializeDatabase } = require('./utils/AutoInitializeDatabase');
+        await autoInitializeDatabase(client);
+
         await ComponentLoader(client);
         require('./utils/hotReload.js')(client);
         await EventLoader(client);
@@ -42,6 +46,7 @@ function logToTelegram(content) {
         await client.login(client.config.TOKEN);
     } catch (err) {
         client.logs.error(`[STARTUP] ${err.stack || err}`);
+        process.exit(1);
     }
 })();
 
@@ -69,19 +74,46 @@ client.on('interactionCreate', async interaction => {
         }
 
         if (interaction.isButton()) {
-            const button = client.buttons.get(interaction.customId);
+            let button = client.buttons.get(interaction.customId);
+            // Check regex patterns if exact match not found
+            if (!button) {
+                for (const [key, value] of client.buttons) {
+                    if (key instanceof RegExp && key.test(interaction.customId)) {
+                        button = value;
+                        break;
+                    }
+                }
+            }
             if (!button) return;
             await button.execute(interaction, client);
         }
 
         if (interaction.isStringSelectMenu()) {
-            const menu = client.menus.get(interaction.customId);
+            let menu = client.menus.get(interaction.customId);
+            // Check regex patterns if exact match not found
+            if (!menu) {
+                for (const [key, value] of client.menus) {
+                    if (key instanceof RegExp && key.test(interaction.customId)) {
+                        menu = value;
+                        break;
+                    }
+                }
+            }
             if (!menu) return;
             await menu.execute(interaction, client);
         }
 
         if (interaction.isModalSubmit()) {
-            const modal = client.modals.get(interaction.customId);
+            let modal = client.modals.get(interaction.customId);
+            // Check regex patterns if exact match not found
+            if (!modal) {
+                for (const [key, value] of client.modals) {
+                    if (key instanceof RegExp && key.test(interaction.customId)) {
+                        modal = value;
+                        break;
+                    }
+                }
+            }
             if (!modal) return;
             await modal.execute(interaction, client);
         }
